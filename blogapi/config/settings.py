@@ -41,13 +41,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # needed for allauth to work
+    "django.contrib.sites",
     
     # 3rd party
     "rest_framework",
+    # Any changes to apps need a db sync : python manage.py migrate
+    "rest_framework.authtoken",
+    # For user registration or signup endpoint, writting our own views, urls, etc from scratch (as django or REST doesn't have default) is a somewhat risky approach. We can use a popular third party package django-allauth that can solve this for us.
+    # Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication is what allauth does.
+    # pipenv install django-allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    # Drop-in API endpoints for handling authentication securely in Django Rest Framework.
+    # pipenv install dj-rest-auth
+    "dj_rest_auth",
+    # Adding the below from the dj package will give us user endpoints.
+    "dj_rest_auth.registration",
     
     # My apps
-    # "posts",
-    "posts.apps.PostsConfig"
+    "posts",
+    # "posts.apps.PostsConfig"
 ]
 
 MIDDLEWARE = [
@@ -148,6 +163,27 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    
+    # Django REST Framework comes with a number of settings82 that are implicitly set. For example, DEFAULT_PERMISSION_CLASSES was set to AllowAny before we updated it to IsAuthenticated above.
+    # The DEFAULT_AUTHENTICATION_CLASSES are set by default so let’s explicitly add both SessionAuthentication and BasicAuthentication
+    # We are using both methods because they serve different purposes. Session is used to power the browsable API and the ability to log in and out. BasicAuth is used to pass the session ID in the HTTP headers for the API itself.
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication'
+        # To use tokens we update the above to:
+        'rest_framework.authentication.TokenAuthentication',
+        # We also need to add the authtoken app in INSTALLED_APPS which generates the tokens on the server.
+    ],
 }
 
+# The email back-end config is needed since by default an email will be sent when a new user is
+# registered, asking them to confirm their account. Rather than also set up an email server, we will
+# output the emails to the console with the console.EmailBackend setting.
+# The default text can be updated and an email SMTP server added with additional configuration that is covered in the beginners book.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# # SITE_ID is part of the built-in Django “sites” framework, which is a way to host multiple
+# websites from the same Django project. We obviously only have one site we are working on here
+# but django-allauth uses the sites framework, so we must specify a default setting.
+SITE_ID = 1

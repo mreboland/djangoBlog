@@ -26,4 +26,11 @@ urlpatterns = [
     path("api/v1/", include("posts.urls")),
     # To avoid having to go to the admin page to log in and out while testing, we can add the below line of code which will add the log in and out functionality directly to the browsable API itself. It'll add a log our button in a dropdown to the username at the top right of the screen.
     path("api-auth/", include("rest_framework.urls")),
+    # Adding our 3rd party app to urls so we can access it.
+    # We go to : http://127.0.0.1:8000/api/v1/dj-rest-auth/login or:
+    # http://127.0.0.1:8000/api/v1/dj-rest-auth/logout/ to do so. There is also /password/reset for pswd reset and /password/reset/confirm for confirmation page.
+    path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),
+    # http://127.0.0.1:8000/api/v1/dj-rest-auth/registration/
+    # Gives us a user registration endpoint at the above address
+    path("api/v1/dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
 ]
