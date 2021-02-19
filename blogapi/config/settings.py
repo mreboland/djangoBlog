@@ -130,8 +130,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# The below AllowAny allows anyone to modify the data within our project. It's used for testing only and not for production. We can limit access to project level, view level, or object level.
+# • AllowAny - any user, authenticated or not, has full access
+# • IsAuthenticated - only authenticated, registered users have access
+# • IsAdminUser - only admins/superusers have access
+# • IsAuthenticatedOrReadOnly - unauthorized users can view any page, but only authenticated
+# users have write, edit, or delete privileges
+
+# Old global allow all
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny',
+#     ]
+# }
+
+# New auth only
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
+

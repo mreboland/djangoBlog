@@ -24,4 +24,6 @@ urlpatterns = [
     # and avoid breaking other apps that rely on your API back-end.
     # If we had multiple apps in a project it might make more sense to create a dedicated api app and then include all the other API url routes into it. But because this is basic, we'll directly include our posts app here.
     path("api/v1/", include("posts.urls")),
+    # To avoid having to go to the admin page to log in and out while testing, we can add the below line of code which will add the log in and out functionality directly to the browsable API itself. It'll add a log our button in a dropdown to the username at the top right of the screen.
+    path("api-auth/", include("rest_framework.urls")),
 ]
