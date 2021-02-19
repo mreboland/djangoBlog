@@ -20,3 +20,6 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
         return obj.author == request.user
     
     # In views.py we import IsAuthorOrReadOnly and then add the permission classes to PostDetail
+
+
+# Setting proper permissions is a very important part of any API. As a general strategy, it is a good idea to set a strict project-level permissions policy such that only authenticated users can view the API. Then make view-level or custom permissions more accessible as needed on specific API endpoints.
