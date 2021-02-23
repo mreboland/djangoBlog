@@ -1,3 +1,5 @@
+# Importing get_user_model which allows us to reference our User model.
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Post
 # The serializer not only transforms data into JSON, it can also specify which fields to include or
@@ -16,3 +18,12 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
         )
         model = Post
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = get_user_model()
+        fields = (
+            "id",
+            "username"
+        )
