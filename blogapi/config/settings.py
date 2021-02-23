@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     # Adding the below from the dj package will give us user endpoints.
     "dj_rest_auth.registration",
+    # pipenv install drf-yasg
+    # Install the above to get API documentation that translates schema into friendlier format
+    "drf_yasg",
     
     # My apps
     "posts",
